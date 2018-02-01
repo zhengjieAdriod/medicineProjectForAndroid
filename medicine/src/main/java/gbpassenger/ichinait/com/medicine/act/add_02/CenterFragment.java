@@ -1,4 +1,4 @@
-package gbpassenger.ichinait.com.medicine;
+package gbpassenger.ichinait.com.medicine.act.add_02;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import gbpassenger.ichinait.com.medicine.BaseFragment;
+import gbpassenger.ichinait.com.medicine.R;
 
 /**
  * Created by DawnOct on 2018/1/22.

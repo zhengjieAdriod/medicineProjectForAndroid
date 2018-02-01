@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardBackgroundColor="@color/item_bg"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/disease_type"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="disease_type" />
+
+        <TextView
+            android:id="@+id/doctor_address"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:paddingLeft="30dp"
+            android:text="doctor_address" />
+
+        <TextView
+            android:id="@+id/doctor_type"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:paddingLeft="30dp"
+            android:text="doctor_type" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

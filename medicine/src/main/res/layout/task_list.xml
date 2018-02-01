@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title_tool_bar"
+        layout="@layout/medicine_tool_bar" />
+
+    <RelativeLayout
+        android:id="@+id/re_tab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="#ea9999">
+
+        <com.yyydjk.library.DropDownMenu
+            android:id="@+id/dropDownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:dddividerColor="@color/gray"
+            app:ddmaskColor="@color/mask_color"
+            app:ddmenuBackgroundColor="@color/white"
+            app:ddmenuSelectedIcon="@mipmap/arrowed"
+            app:ddmenuTextSize="13sp"
+            app:ddmenuUnselectedIcon="@mipmap/arrow"
+            app:ddtextSelectedColor="@color/drop_down_selected"
+            app:ddtextUnselectedColor="@color/drop_down_unselected"
+            app:ddunderlineColor="@color/gray" />
+
+    </RelativeLayout>
+</RelativeLayout>

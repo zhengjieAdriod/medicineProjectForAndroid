@@ -9,7 +9,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/art" />
+            <option value="$PROJECT_DIR$/library_downMenue" />
             <option value="$PROJECT_DIR$/medicine" />
+            <option value="$PROJECT_DIR$/recyclerViewlibrary" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
