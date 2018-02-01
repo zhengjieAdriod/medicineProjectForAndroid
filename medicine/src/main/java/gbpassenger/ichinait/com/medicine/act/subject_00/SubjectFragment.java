@@ -1,5 +1,7 @@
 package gbpassenger.ichinait.com.medicine.act.subject_00;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.yyydjk.library.DropDownMenu;
@@ -26,6 +29,7 @@ import gbpassenger.ichinait.com.medicine.customView.EmptyLayout;
 import gbpassenger.ichinait.com.medicine.netbean.Detail;
 import gbpassenger.ichinait.com.medicine.netbean.ResponceSubjects;
 import gbpassenger.ichinait.com.medicine.utils.SwipeRefreshHelper;
+import gbpassenger.ichinait.com.medicine.utils.ToastUtil;
 import me.jessyan.art.base.BaseFragment;
 import me.jessyan.art.mvp.IPresenter;
 import me.jessyan.art.mvp.IView;
@@ -41,8 +45,8 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
     LayoutInflater mInflater;
     GirdDropDownAdapter scaleAdapter, typeAdapter;
     private String headers[] = {"病类", "地区"};
-    public String scales[] = {"不限", "特大", "大", "中", "小", "涵洞"};//12345对应
-    public String types[] = {"不限", "公路桥"};//功能类型
+    public String doctorTypes[] = {"不限", "中医", "西医"};
+    public String types[] = {"不限", "东北", "华北", "西北", "华中", "华东", "华南", "西南"};//功能类型
     private List<View> popupViews = new ArrayList<>();
     public static int PAGE_SIZE = 3;
     public boolean hasTotal = false;
@@ -58,7 +62,7 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
     @Override
     protected void initData() {
         mCurrentCounter = 0;
-        mPresenter.requestSubjectList(Message.obtain(SubjectFragment.this), 1);
+        mPresenter.requestSubjectList(Message.obtain(SubjectFragment.this), 1, doctorType);
     }
 
     @Nullable
@@ -68,17 +72,17 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
     List<Detail.SubjectBean> mList;
     SubjectAdapter subjectAdapter;
     RecyclerView mRecyclerView;
+    String doctorType;
 
     private void initViews() {
-
         mInflater = LayoutInflater.from(getActivity().getApplicationContext());
-//        initToolBar(mToolbar, true, "桥梁分类");
         //init city menu
         final ListView scaleView = new ListView(getContext());
-        scaleAdapter = new GirdDropDownAdapter(getContext(), Arrays.asList(scales));
+        scaleAdapter = new GirdDropDownAdapter(getContext(), Arrays.asList(doctorTypes));
         scaleView.setDividerHeight(0);
         scaleView.setLayoutParams(new ViewGroup.LayoutParams(10, ViewGroup.LayoutParams.MATCH_PARENT));
         scaleView.setAdapter(scaleAdapter);
+
         //init age menu
         final ListView typeView = new ListView(getContext());
         typeAdapter = new GirdDropDownAdapter(getContext(), Arrays.asList(types));
@@ -112,13 +116,21 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
             }
         }, mRecyclerView);
 //        subjectAdapter.disableLoadMoreIfNotFullPage();
+        subjectAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //跳转到详情页
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                startActivity(intent);
+            }
+        });
         //todo 组装mDropDownMenu
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, view);
     }
 
     @Override
     public void onRefresh() {
-        mPresenter.requestSubjectList(Message.obtain(SubjectFragment.this), 1);
+        mPresenter.requestSubjectList(Message.obtain(SubjectFragment.this), 1, doctorType);
     }
 
     int mCurrentCounter;
@@ -136,7 +148,7 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
         } else {
             //成功获取更多数据
             int page = page_num + 1;
-            mPresenter.requestSubjectList(Message.obtain(SubjectFragment.this), page);
+            mPresenter.requestSubjectList(Message.obtain(SubjectFragment.this), page, doctorType);
         }
     }
 
@@ -147,11 +159,12 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 scaleAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(position == 0 ? headers[0] : scales[position]);
+                mDropDownMenu.setTabText(position == 0 ? headers[0] : doctorTypes[position]);
                 mDropDownMenu.closeMenu();
-                String scale = scales[position];
+                doctorType = position == 0 ? "" : position == 1 ? "01" : "02";
 //                mScale = position;
 //                presenter.getNetData(loginBean, 1, mScale, mType, mLv, mBridgeType, false);//默认是false
+                mPresenter.requestSubjectList(Message.obtain(SubjectFragment.this), 1, doctorType);
             }
         });
 
@@ -161,6 +174,7 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
                 typeAdapter.setCheckItem(position);
                 mDropDownMenu.setTabText(position == 0 ? headers[1] : types[position]);
                 mDropDownMenu.closeMenu();
+//                mPresenter.requestSubjectList(Message.obtain(SubjectFragment.this), 1, doctorType);
 //                if (position > 0) {
 //                    mType = types[position];
 //                } else {
@@ -202,6 +216,7 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
                 subjectAdapter.loadMoreFail();
                 SwipeRefreshHelper.enableRefresh(mSwipeRefresh, true);//设置下拉刷新的生效
                 SwipeRefreshHelper.controlRefresh(mSwipeRefresh, false);//先设置下拉刷新的生效
+                Toast.makeText(getContext(), "网络异常", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

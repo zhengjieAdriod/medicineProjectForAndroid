@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="10dp"
+        android:paddingBottom="?attr/actionBarSize">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="我是话题标题"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/initiator_head"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/title"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/initiator_name"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@+id/title"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/initiator_head"
+            android:text="我是发起者" />
+
+        <com.came.viewbguilib.ButtonBgUi
+            android:id="@+id/follow"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/title"
+            android:clickable="true"
+            android:text="收藏"
+            android:textColor="#ffffff"
+            app:defaultColor="#f7964f"
+            app:raoundRadius="3dp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/follow"
+            android:layout_marginTop="5dp"
+            android:text="2018-02-09"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/time"
+            android:text="优雅的展示长篇文字:http://blog.csdn.net/LPC_JAVA/article/details/78056946?locationNum=6fps=1" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/toolbar_tab"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="#ffffff"
+        android:fillViewport="true"
+        app:layout_scrollFlags="scroll"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="#0835f8"
+        app:tabIndicatorHeight="0dp"
+        app:tabSelectedTextColor="#0835f8"
+        app:tabTextColor="#ced0d3">
+
+    </android.support.design.widget.TabLayout>
+</RelativeLayout>

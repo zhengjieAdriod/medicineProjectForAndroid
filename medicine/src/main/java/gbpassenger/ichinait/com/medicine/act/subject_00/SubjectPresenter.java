@@ -29,11 +29,14 @@ import static gbpassenger.ichinait.com.medicine.act.subject_00.SubjectFragment.S
 
 public class SubjectPresenter extends BasePresenter {
     //
-    public void requestSubjectList(final Message message, int page) {
+    public void requestSubjectList(final Message message, int page, String doctorType) {
         Observable<Response<ResponceSubjects>> observable =
                 OkGo.<ResponceSubjects>get("http://192.168.1.97:8000/getSubjects/")
                         .params("page", page)
-                        .converter(new JsonCallBack<ResponceSubjects>(ResponceSubjects.class)).adapt(new ObservableResponse<ResponceSubjects>());
+                        .params("doctorType", doctorType)
+                        .converter(new JsonCallBack<ResponceSubjects>(ResponceSubjects.class))
+                        .adapt(new ObservableResponse<ResponceSubjects>());
+
         observable.doOnSubscribe(new Consumer<Disposable>() {
             @Override
             public void accept(@NonNull Disposable disposable) throws Exception {
