@@ -1,13 +1,11 @@
 package gbpassenger.ichinait.com.medicine.act.subject_00;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,9 +27,7 @@ import gbpassenger.ichinait.com.medicine.customView.EmptyLayout;
 import gbpassenger.ichinait.com.medicine.netbean.Detail;
 import gbpassenger.ichinait.com.medicine.netbean.ResponceSubjects;
 import gbpassenger.ichinait.com.medicine.utils.SwipeRefreshHelper;
-import gbpassenger.ichinait.com.medicine.utils.ToastUtil;
 import me.jessyan.art.base.BaseFragment;
-import me.jessyan.art.mvp.IPresenter;
 import me.jessyan.art.mvp.IView;
 import me.jessyan.art.mvp.Message;
 
@@ -120,7 +116,7 @@ public class SubjectFragment extends BaseFragment<SubjectPresenter> implements I
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //跳转到详情页
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                Intent intent = new Intent(getActivity(), DetailBaseActivity.class);
                 startActivity(intent);
             }
         });

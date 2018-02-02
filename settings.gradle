@@ -1,1 +1,1 @@
-include ':app', ':medicine', ':library_downMenue', ':art', ':recyclerViewlibrary'
+include ':app', ':medicine', ':library_downMenue', ':art', ':recyclerViewlibrary', ':pullTextView'

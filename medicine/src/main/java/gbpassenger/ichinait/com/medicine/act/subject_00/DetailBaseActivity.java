@@ -33,7 +33,7 @@ import me.jessyan.art.mvp.Message;
  * Created by DawnOct on 2018/2/1.
  */
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailBaseActivity extends AppCompatActivity {
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
     @BindView(R.id.toolbar_tab)

@@ -54,4 +54,10 @@ dependencies {
     compile 'com.lzy.net:okrx2:2.0.2'//OkRx
     compile 'com.github.ithedan:CustomViewBgUi:v1.0' //按钮样式
     compile 'com.google.code.gson:gson:2.8.2'
+
+    //超级展示html
+    compile files('libs/osbcp-css-parser-1.4.jar')
+    compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'
+
+
 }

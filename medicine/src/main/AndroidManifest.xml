@@ -21,7 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".act.subject_00.DetailActivity" />
+        <activity android:name=".act.subject_00.DetailBaseActivity" />
+        <activity android:name="byl.com.testprasehtml.ImgPreviewActivity" />
+        <activity android:name="com.niuduz.richeditor_ding.EditActivity" />
+        <activity android:name="com.niuduz.richeditor_ding.ReadAcitvity" />
     </application>
 
 </manifest>
