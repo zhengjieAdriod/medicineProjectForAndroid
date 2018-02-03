@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ResponceSubjects {
     private String code;
+    private String msg;
     private int page_num;
     private int page_size;
     private int total_page;
@@ -60,5 +61,13 @@ public class ResponceSubjects {
 
     public void setTotal_size(int total_size) {
         this.total_size = total_size;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

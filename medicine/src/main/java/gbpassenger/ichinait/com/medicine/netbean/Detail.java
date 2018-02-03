@@ -61,6 +61,8 @@ public class Detail {
         private String created_time;
         private CrowdBean crowd;
         private String describe;
+        private String title;
+        private String content;
         private String disease_type;
         private String doctor_address;
         private String doctor_type;
@@ -174,6 +176,22 @@ public class Detail {
 
         public void setFollowers(List<FollowersBean> followers) {
             this.followers = followers;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
         }
 
         public static class CrowdBean {

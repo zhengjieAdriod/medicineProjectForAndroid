@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gbpassenger.ichinait.com.medicine.R;
+import gbpassenger.ichinait.com.medicine.netbean.Detail;
 import me.jessyan.art.base.BaseFragment;
 import me.jessyan.art.mvp.IPresenter;
 import me.jessyan.art.mvp.IView;
@@ -47,7 +48,7 @@ import me.jessyan.art.mvp.Message;
  * Created by DawnOct on 2018/1/22.
  */
 
-public class CenterFragment extends BaseFragment implements IView, View.OnClickListener {
+public class CenterFragment extends BaseFragment<AddPresenter> implements IView, View.OnClickListener {
     private InputMethodManager imm;//软键盘管理器
     private RelativeLayout rl_layout_editor;
     private ImageButton action_undo, action_redo, action_font, action_add;
@@ -405,15 +406,10 @@ public class CenterFragment extends BaseFragment implements IView, View.OnClickL
 
     }
 
-    @Override
-    public void handleMessage(Message message) {
-
-    }
-
 
     @Override
-    protected IPresenter getPresenter() {
-        return null;
+    protected AddPresenter getPresenter() {
+        return new AddPresenter();
     }
 
     boolean isclick = true;
@@ -427,10 +423,12 @@ public class CenterFragment extends BaseFragment implements IView, View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.save:
-                String html = mEditor.getHtml();
-                Intent intent = new Intent(getActivity(), ReadAcitvity.class);
-                intent.putExtra("html", html);
-                startActivity(intent);
+                saveSubject();
+                //todo 将html 发送到后台系统
+
+//                Intent intent = new Intent(getActivity(), ReadAcitvity.class);
+//                intent.putExtra("html", html);
+//                startActivity(intent);
 //        mEditor.clearFocusEditor();
 //        mEditor.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
                 Log.e("", "");
@@ -652,6 +650,7 @@ public class CenterFragment extends BaseFragment implements IView, View.OnClickL
         }
     }
 
+
     private AlertDialog linkDialog;
 
     // 执行动画效果
@@ -686,22 +685,70 @@ public class CenterFragment extends BaseFragment implements IView, View.OnClickL
             c.close();
             Log.i("dgs", "picturePath----" + picturePath);
             //todo 上传图片,完成后获得图片网络地址
-            //todo 然后插入图片的网络地址
-//            mEditor.insertImage(picturePath, "图片");
-            mEditor.insertImage("http://img.blog.csdn.net/20161019105746983?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center", "图片02");
-
-            //获取图片并显示
-
+            mPresenter.postImage(Message.obtain(this), "6", "pic", picturePath);
         }
     }
 
-    public void save(View view) {
+    private void saveSubject() {
         String html = mEditor.getHtml();
-        Intent intent = new Intent(getActivity(), ReadAcitvity.class);
-        intent.putExtra("html", html);
-        startActivity(intent);
-//        mEditor.clearFocusEditor();
-//        mEditor.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
-        Log.e("", "");
+        Detail.SubjectBean subjectBean = new Detail.SubjectBean();
+        //发起人
+        Detail.SubjectBean.InitiatorBean initiatorBean = new Detail.SubjectBean.InitiatorBean();
+        initiatorBean.setName("赵柳");
+        initiatorBean.setTelephone("155");
+        subjectBean.setInitiator(initiatorBean);
+        //众筹实体
+        Detail.SubjectBean.CrowdBean crowdBean = new Detail.SubjectBean.CrowdBean();
+        crowdBean.setCrowd_funding("10000");
+        crowdBean.setCrowd_progress("0");
+        subjectBean.setCrowd(crowdBean);
+        //待任务
+        Detail.SubjectBean.TaskBean taskBean = new Detail.SubjectBean.TaskBean();
+        taskBean.setTask_deadline("100天");
+        taskBean.setTask_outline("50天");
+        subjectBean.setTask(taskBean);
+        //是否顶置
+        Detail.SubjectBean.TopBean topBean = new Detail.SubjectBean.TopBean();
+        topBean.setIs_top(false);
+        subjectBean.setTop(topBean);
+        //标题
+        subjectBean.setTitle("去河南看中医");
+        //描述
+        subjectBean.setDescribe("听说有个牛逼的民间中医");
+        //内容
+        subjectBean.setContent(html);//富文本内容
+        subjectBean.setDisease_type("高血压");
+        subjectBean.setDoctor_address("某某村庄");
+        subjectBean.setDoctor_type("01");
+        subjectBean.setOrigin_from("01");//话题来源
+        subjectBean.setPraise(0);
+//                将字符串转为File
+        mPresenter.addSubject(Message.obtain(this), subjectBean);
     }
+
+    public static final int POST_IMAGE_SUCCESS = 0;
+    public static final int POST_IMAGE_ERROR = 1;
+    public static final int POST_SUBJECT_SUCCESS = 2;
+    public static final int POST_SUBJECT_ERROR = 3;
+
+    @Override
+    public void handleMessage(Message message) {
+        switch (message.what) {
+            case POST_IMAGE_SUCCESS://图片上传成功
+                String url = (String) message.obj;
+                mEditor.insertImage(url, "图片02");
+                break;
+            case POST_IMAGE_ERROR://图片上传失败
+                mEditor.insertImage("http://img.blog.csdn.net/20161019105746983?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center", "图片02");
+                break;
+            case POST_SUBJECT_SUCCESS://文章上传成功
+                //跳转到展示页(而展示页可以选择再次编辑)
+
+                break;
+            case POST_SUBJECT_ERROR://文章上传失败
+                break;
+        }
+
+    }
+
 }
