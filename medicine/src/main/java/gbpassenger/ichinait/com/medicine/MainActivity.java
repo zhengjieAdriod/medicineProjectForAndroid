@@ -1,6 +1,7 @@
 package gbpassenger.ichinait.com.medicine;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,14 +10,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import gbpassenger.ichinait.com.medicine.act.add_02.CenterFragment;
+import gbpassenger.ichinait.com.medicine.act.add_02.EditorActivity;
 import gbpassenger.ichinait.com.medicine.act.subject_00.SubjectFragment;
 
 /**
@@ -31,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     SubjectFragment mFragment1;
 
     MyListFragment mFragment2;
-    CenterFragment mFragment3;
+    //    CenterFragment mFragment3;
+    MyListFragment mFragment3;
 
     MyListFragment mFragment4;
     MyListFragment mFragment5;
@@ -69,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
 //            mFragment1.initData('a', 'z');
             mFragment2 = new MyListFragment();
             mFragment2.initData('A', 'Z');
-            mFragment3 = new CenterFragment();
-//            mFragment3.initData('a', 'z');
+            mFragment3 = new MyListFragment();
+//            mFragment3 = new CenterFragment();
+            mFragment3.initData('a', 'z');
             mFragment4 = new MyListFragment();
             mFragment4.initData('A', 'Z');
             mFragment5 = new MyListFragment();
@@ -89,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.getTabAt(1).setCustomView(getTabView(1));
         View inflate = LayoutInflater.from(this).inflate(R.layout.center_layout, null);
         inflate.setTag("center");
+        inflate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo 跳转到编辑的activity, 而不是中间的Fragment
+                startActivity(new Intent(MainActivity.this, EditorActivity.class));
+            }
+        });
         mTabLayout.getTabAt(2).setCustomView(inflate); //获得自定义的view
         mTabLayout.getTabAt(3).setCustomView(getTabView(3));
         mTabLayout.getTabAt(4).setCustomView(getTabView(4));
@@ -143,8 +155,11 @@ public class MainActivity extends AppCompatActivity {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startPropertyAnim(imgTitle);
-                mViewPager.setCurrentItem(position);
+                if (position != 2) {
+                    startPropertyAnim(imgTitle);
+                    mViewPager.setCurrentItem(position);
+                }
+
             }
         });
         return view;

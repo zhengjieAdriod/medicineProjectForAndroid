@@ -4,9 +4,10 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:orientation="vertical">
-
+    <include
+        android:id="@+id/title_tool_bar"
+        layout="@layout/medicine_tool_bar" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

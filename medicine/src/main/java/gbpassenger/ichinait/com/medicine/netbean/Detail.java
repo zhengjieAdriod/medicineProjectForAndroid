@@ -1,5 +1,6 @@
 package gbpassenger.ichinait.com.medicine.netbean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class Detail {
         this.taskProgress = taskProgress;
     }
 
-    public static class SubjectBean {
+    public static class SubjectBean implements Serializable {
         /**
          * created_time : 2018-01-27T05:28:17.734829Z
          * crowd : {"crowd_funding":"45000","crowd_progress":"0","crowd_providers":[{"address":"北京","age":20,"name":"张三","pk":1,"telephone":"110"}],"pk":18}
@@ -194,7 +195,7 @@ public class Detail {
             this.content = content;
         }
 
-        public static class CrowdBean {
+        public static class CrowdBean implements Serializable {
             /**
              * crowd_funding : 45000
              * crowd_progress : 0
@@ -296,7 +297,7 @@ public class Detail {
             }
         }
 
-        public static class InitiatorBean {
+        public static class InitiatorBean implements Serializable {
             /**
              * address : 北京
              * age : 20
@@ -352,7 +353,7 @@ public class Detail {
             }
         }
 
-        public static class TaskBean {
+        public static class TaskBean implements Serializable {
             /**
              * pk : 18
              * task_deadline : 5天
@@ -474,7 +475,7 @@ public class Detail {
             }
         }
 
-        public static class TopBean {
+        public static class TopBean implements Serializable {
             /**
              * is_top : true
              * top_time : 2018-01-27T05:28:17.656334Z
@@ -500,7 +501,7 @@ public class Detail {
             }
         }
 
-        public static class FollowersBean {
+        public static class FollowersBean implements Serializable {
             /**
              * address : 上海
              * age : 20

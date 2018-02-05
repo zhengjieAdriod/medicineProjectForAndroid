@@ -19,15 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import gbpassenger.ichinait.com.medicine.MainActivity;
-import gbpassenger.ichinait.com.medicine.MyListFragment;
 import gbpassenger.ichinait.com.medicine.R;
-import gbpassenger.ichinait.com.medicine.act.add_02.CenterFragment;
-import gbpassenger.ichinait.com.medicine.netbean.Detail;
-import me.jessyan.art.base.BaseActivity;
-import me.jessyan.art.mvp.IPresenter;
-import me.jessyan.art.mvp.IView;
-import me.jessyan.art.mvp.Message;
 
 /**
  * Created by DawnOct on 2018/2/1.

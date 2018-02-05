@@ -1,15 +1,20 @@
 package gbpassenger.ichinait.com.medicine.act.add_02;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.nightwhistler.htmlspanner.HtmlSpanner;
 import net.nightwhistler.htmlspanner.LinkMovementMethodExt;
@@ -17,60 +22,69 @@ import net.nightwhistler.htmlspanner.MyImageSpan;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import byl.com.testprasehtml.ImgPreviewActivity;
+import gbpassenger.ichinait.com.medicine.MainActivity;
 import gbpassenger.ichinait.com.medicine.R;
-import gbpassenger.ichinait.com.medicine.utils.Constant;
+import gbpassenger.ichinait.com.medicine.netbean.Detail;
 import me.jessyan.art.base.BaseActivity;
-import me.jessyan.art.mvp.IPresenter;
 import me.jessyan.art.mvp.IView;
+
 
 //http://blog.csdn.net/baiyuliang2013/article/details/53538118
 public class ShowActivity extends BaseActivity<AddPresenter> implements IView {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     TextView tv;
     HtmlSpanner htmlSpanner;
     ArrayList<String> imglist;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.super_read_activity);
+    protected int initView() {
+        return R.layout.super_read_activity;
+    }
+
+    @Override
+    protected void initData() {
+        initActionBar("ff");
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         imglist = new ArrayList<>();
         htmlSpanner = new HtmlSpanner(this, dm.widthPixels, handler);
         tv = (TextView) findViewById(R.id.tv);
-        final String html = Constant.html;
-// todo  首次添加新话题完成后, 跳转到该页(从后台获取数据,仅仅展示).
-// todo 在该页面中点击编辑, 则跳转到编辑页(在编辑页,从后台获取数据,通过 mEditor.setHtml(h),完成再次编辑)
-//todo  mPresenter.getSubjectDetail(me.jessyan.art.mvp.Message mesage);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final Spannable spannable = htmlSpanner.fromHtml(html); //耗时操作
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tv.setText(spannable);
-                        tv.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
-                    }
-                });
-            }
-        }).start();
+        String subjectPk = getIntent().getStringExtra("subjectPk");
+        if (!TextUtils.isEmpty(subjectPk))
+            mPresenter.requestDetail(me.jessyan.art.mvp.Message.obtain(this), subjectPk);
     }
 
-    @Override
-    protected int initView() {
-        return 0;
-    }
 
-    @Override
-    protected void initData() {
-
-    }
+    public static final int SUBJECT_DETAIL_SUCCESS = 0;
+    public static final int SUBJECT_DETAIL_ERROR = 1;
+    public static final int HTML_PARSER_SUCCESS = 2;
+    public static final int HTML_PARSER_ERROR = 3;
+    Detail.SubjectBean bean;
 
     @Override
     public void handleMessage(me.jessyan.art.mvp.Message message) {
+        switch (message.what) {
+            case SUBJECT_DETAIL_SUCCESS:
+                bean = (Detail.SubjectBean) message.obj;
+                if (bean != null)
+                    //成功获得详情数据之后,进行解析html的耗时操作: Spannable spannable = htmlSpanner.fromHtml(html); //耗时操作
+                    mPresenter.parseHtml(me.jessyan.art.mvp.Message.obtain(this), htmlSpanner, bean.getContent());
+                break;
+            case SUBJECT_DETAIL_ERROR:
+                break;
+            case HTML_PARSER_SUCCESS:
+                Spannable spannable = (Spannable) message.obj;
+                tv.setText(spannable);
+                tv.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
+                break;
+            case HTML_PARSER_ERROR:
+                break;
+
+        }
 
     }
 
@@ -125,5 +139,38 @@ public class ShowActivity extends BaseActivity<AddPresenter> implements IView {
 
     }
 
+    //设置actionBar
+    private void initActionBar(String title) {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(title);
+        toolbar.setTitleTextColor(Color.WHITE);
+        //设置导航图标要在setSupportActionBar方法之后
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.mipmap.back);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_history:
+                        Toast.makeText(ShowActivity.this, "action_history !", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_setting: //重新编辑
+                        Intent intent = new Intent(ShowActivity.this, EditorActivity.class);
+                        intent.putExtra("subject", bean);
+                        startActivity(intent);
+                        Toast.makeText(ShowActivity.this, "action_setting !", Toast.LENGTH_SHORT).show();
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
 
+    //title_bar的右侧点击时间
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_title, menu);
+        return true;
+    }
 }
