@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_history"
+        android:icon="@mipmap/search"
+        android:title="history"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_setting"
+        android:title="发布"
+        app:showAsAction="ifRoom" />
+
+</menu>

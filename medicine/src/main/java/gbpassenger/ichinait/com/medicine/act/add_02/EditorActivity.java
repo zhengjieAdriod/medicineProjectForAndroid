@@ -5,13 +5,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -21,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -31,10 +36,13 @@ import android.widget.Toast;
 import com.niuduz.richeditor_ding.EditActivity;
 import com.niuduz.richeditor_ding.richeditor.RichEditor;
 
+import org.angmarch.views.NiceSpinner;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import gbpassenger.ichinait.com.medicine.R;
 import gbpassenger.ichinait.com.medicine.netbean.Detail;
 import me.jessyan.art.base.BaseActivity;
@@ -55,8 +63,8 @@ public class EditorActivity extends BaseActivity<AddPresenter> implements IView,
     private ImageButton ib_Bold, ib_Italic, ib_StrikeThough, ib_BlockQuote, ib_H1, ib_H2, ib_H3, ib_H4;
     private boolean flag1, flag2, flag3, flag4, flag5, flag6, flag7, flag8;
     public final static int RICH_IMAGE_CODE = 0x33;
-
-    TextView save;
+    List<DoctorTyoe> dataset;
+    String doctorTypeCode = "03";
 
     @Override
     protected int initView() {
@@ -65,6 +73,8 @@ public class EditorActivity extends BaseActivity<AddPresenter> implements IView,
 
     @Override
     protected void initData() {
+        initActionBar("编辑");
+        doctor_type = (NiceSpinner) findViewById(R.id.nice_spinner);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         initViews();
         initEvents();
@@ -72,11 +82,41 @@ public class EditorActivity extends BaseActivity<AddPresenter> implements IView,
         if (subject != null && !TextUtils.isEmpty(subject.getContent())) {
             mEditor.setHtml(subject.getContent());
         }
+        dataset = new ArrayList<>(3);
+        dataset.add(new DoctorTyoe("01", "中医"));
+        dataset.add(new DoctorTyoe("02", "西医"));
+        dataset.add(new DoctorTyoe("03", "未知"));
+        doctor_type.attachDataSource(dataset);
+        doctor_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                doctorTypeCode = dataset.get(position).code;
+                Toast.makeText(EditorActivity.this, "选择了:" + dataset.get(position), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+
+    public static class DoctorTyoe {
+        public String code, name;
+
+        public DoctorTyoe(String code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return this.name;
+        }
     }
 
     private void initViews() {
-        save = (TextView) findViewById(R.id.save);
-        save.setOnClickListener(this);
         //富文本编辑初始化
         mEditor = (RichEditor) findViewById(R.id.editor);
         mEditor.setEditorFontSize(15);
@@ -419,25 +459,12 @@ public class EditorActivity extends BaseActivity<AddPresenter> implements IView,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.save:
-                saveSubject();
-                //todo 将html 发送到后台系统
-
-//                Intent intent = new Intent(getActivity(), ReadAcitvity.class);
-//                intent.putExtra("html", html);
-//                startActivity(intent);
-//        mEditor.clearFocusEditor();
-//        mEditor.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
-                Log.e("", "");
+            case R.id.task:
+                //todo 弹窗编辑任务
                 break;
-
-//            //上传图片
-//            case R.id.img_uploading_pic:
-//                PhotoPickerIntent intent = new PhotoPickerIntent(EditActivity.this);
-//                intent.setPhotoCount(6 - selectedPhotos.size());//可以添加6张图片
-//                startActivityForResult(intent, REQUEST_CODE);
-//                break;
-
+            case R.id.crowd:
+                //todo 弹窗编辑众筹
+                break;
             //撤回
             case R.id.action_undo:
 
@@ -687,8 +714,28 @@ public class EditorActivity extends BaseActivity<AddPresenter> implements IView,
     }
 
     Detail.SubjectBean subjectBean;
+    @BindView(R.id.title)
+    EditText title;
+    @BindView(R.id.describe)
+    EditText describe;
+    @BindView(R.id.nice_spinner)
+    NiceSpinner doctor_type;
+    @BindView(R.id.doctor_address)
+    EditText doctor_address;
+    @BindView(R.id.disease_type)
+    EditText disease_type;
+    @BindView(R.id.task)
+    TextView task;
+    @BindView(R.id.crowd)
+    TextView crowd;
+
 
     private void saveSubject() {
+        String titleStr = title.getText().toString().trim();
+        String describStr = describe.getText().toString().trim();
+        String doctor_addressStr = doctor_address.getText().toString().trim();
+        String disease_typeStr = disease_type.getText().toString().trim();
+
         String html = mEditor.getHtml();
         subjectBean = new Detail.SubjectBean();
         //发起人
@@ -711,14 +758,14 @@ public class EditorActivity extends BaseActivity<AddPresenter> implements IView,
         topBean.setIs_top(false);
         subjectBean.setTop(topBean);
         //标题
-        subjectBean.setTitle("去河南看中医");
+        subjectBean.setTitle(titleStr);
         //描述
-        subjectBean.setDescribe("听说有个牛逼的民间中医");
+        subjectBean.setDescribe(describStr);
         //内容
         subjectBean.setContent(html);//富文本内容
-        subjectBean.setDisease_type("高血压");
-        subjectBean.setDoctor_address("某某村庄");
-        subjectBean.setDoctor_type("01");
+        subjectBean.setDisease_type(disease_typeStr);
+        subjectBean.setDoctor_address(doctor_addressStr);
+        subjectBean.setDoctor_type(doctorTypeCode);
         subjectBean.setOrigin_from("01");//话题来源
         subjectBean.setPraise(0);
         mPresenter.addSubject(Message.obtain(this), subjectBean);
@@ -755,4 +802,37 @@ public class EditorActivity extends BaseActivity<AddPresenter> implements IView,
 
     }
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    //设置actionBar
+    private void initActionBar(String title) {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(title);
+        toolbar.setTitleTextColor(Color.WHITE);
+        //设置导航图标要在setSupportActionBar方法之后
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.mipmap.back);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_history:
+                        Toast.makeText(EditorActivity.this, "action_history !", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_setting: //上传
+                        saveSubject();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    //title_bar的右侧点击时间
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
+        return true;
+    }
 }

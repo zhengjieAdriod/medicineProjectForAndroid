@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">zjAndroid</string>
+    <string name="title">请输入标题</string>
+    <string name="describe">摘要</string>
+    <string name="doctor_type">中医类型</string>
+    <string name="doctor_address">寻医地址</string>
+    <string name="disease_type">疾病类型</string>
+    <string name="crowd">众筹</string>
+    <string name="task">任务</string>
 </resources>

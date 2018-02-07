@@ -4,33 +4,155 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:onClick="save"
-        android:padding="20dp"
-        android:text="保存"
+    <include
+        android:id="@+id/title_tool_bar"
+        layout="@layout/medicine_tool_bar" />
 
-        />
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?actionBarSize"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/title" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_describe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_title"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/describe" />
+
+        <EditText
+            android:id="@+id/describe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/describe" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_doctor_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_describe"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/doctor_type" />
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/nice_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="3"
+            android:hint="@string/doctor_type" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_doctor_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_doctor_type"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/doctor_address" />
+
+        <EditText
+            android:id="@+id/doctor_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/doctor_address" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_disease_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_doctor_address"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/disease_type" />
+
+        <EditText
+            android:id="@+id/disease_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="@string/disease_type" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_task_crowd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_disease_type"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/task"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="@string/task" />
+
+        <TextView
+            android:id="@+id/crowd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            android:text="@string/crowd" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/save"
+        android:layout_below="@+id/ll_task_crowd"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical">
 
             <com.niuduz.richeditor_ding.richeditor.RichEditor
                 android:id="@+id/editor"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_300dip"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dimen_5dip"
                 android:layout_marginRight="@dimen/dimen_5dip"
                 android:gravity="top|left"
@@ -92,7 +214,7 @@
                 android:id="@+id/action_undo"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:background="@null"
                 android:contentDescription="@null"
                 android:src="@mipmap/undo" />
@@ -101,7 +223,7 @@
                 android:id="@+id/action_redo"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:background="@null"
                 android:contentDescription="@null"
                 android:src="@mipmap/redo" />
@@ -110,7 +232,7 @@
                 android:id="@+id/action_font"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:background="@null"
                 android:contentDescription="@null"
                 android:src="@mipmap/font" />
@@ -119,7 +241,7 @@
                 android:id="@+id/action_add"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:background="@null"
                 android:contentDescription="@null"
                 android:src="@mipmap/add" />
@@ -131,13 +253,13 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/ll_layout_editor"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="-18dp"
             android:layout_marginRight="-5dp"
             android:background="@drawable/richfont_bg"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="gone"
-            android:layout_alignParentRight="true">
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/action_bold"
@@ -211,6 +333,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/ll_layout_editor"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="-18dp"
             android:layout_marginRight="@dimen/dimen_12dip"
             android:background="@drawable/richadd_bg"
@@ -218,8 +341,7 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/dimen_20dip"
             android:paddingRight="@dimen/dimen_20dip"
-            android:visibility="gone"
-            android:layout_alignParentRight="true">
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/action_image"

@@ -65,8 +65,6 @@ public class CenterFragment extends BaseFragment<AddPresenter> implements IView,
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
         view = inflater.inflate(R.layout.activity_main_editor, container, false);
-        save = (TextView) view.findViewById(R.id.save);
-        save.setOnClickListener(this);
         initViews(view);
         return view;
     }
@@ -422,18 +420,6 @@ public class CenterFragment extends BaseFragment<AddPresenter> implements IView,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.save:
-                saveSubject();
-                //todo 将html 发送到后台系统
-
-//                Intent intent = new Intent(getActivity(), ReadAcitvity.class);
-//                intent.putExtra("html", html);
-//                startActivity(intent);
-//        mEditor.clearFocusEditor();
-//        mEditor.setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
-                Log.e("", "");
-                break;
-
 //            //上传图片
 //            case R.id.img_uploading_pic:
 //                PhotoPickerIntent intent = new PhotoPickerIntent(EditActivity.this);

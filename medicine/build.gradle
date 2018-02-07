@@ -58,6 +58,7 @@ dependencies {
     //超级展示html
     compile files('libs/osbcp-css-parser-1.4.jar')
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'
+    compile 'com.github.arcadefire:nice-spinner:1.3.1' //下拉框
 
 
 }
